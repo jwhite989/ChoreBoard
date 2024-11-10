@@ -7,6 +7,7 @@ import com.example.choreboard_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -41,8 +42,9 @@ public class ChoreService {
         if (chore != null && chore.getAssignedTo() != null) {
             User user = chore.getAssignedTo();
             user.setPoints(user.getPoints() + chore.getPoints());
+            chore.setCompletedDate(LocalDate.now());
+            choreRepository.save(chore);
             userRepository.save(user);
-            choreRepository.deleteById(choreId); // Optionally delete or mark as completed
         }
     }
 }

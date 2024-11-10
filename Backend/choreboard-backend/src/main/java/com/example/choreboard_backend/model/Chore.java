@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
+
 @Entity
 public class Chore {
     @Id
@@ -26,6 +28,8 @@ public class Chore {
     @ManyToOne
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
+
+    private LocalDate completedDate;
 
     // Getters and setters
 
@@ -83,6 +87,14 @@ public class Chore {
 
     public void setAssignedTo(User assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public LocalDate getCompletedDate() {
+        return completedDate;
+    }
+
+    public void setCompletedDate(LocalDate completedDate) {
+        this.completedDate = completedDate;
     }
 
 }

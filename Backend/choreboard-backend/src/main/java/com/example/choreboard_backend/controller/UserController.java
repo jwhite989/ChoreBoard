@@ -1,10 +1,12 @@
 package com.example.choreboard_backend.controller;
 
 import com.example.choreboard_backend.model.User;
+import com.example.choreboard_backend.service.ReportService;
 import com.example.choreboard_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -12,6 +14,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReportService reportService;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -41,5 +46,12 @@ public class UserController {
     @GetMapping("/{id}/points")
     public int getUserPoints(@PathVariable Long id) {
         return userService.getUserPoints(id);
+    }
+
+    @GetMapping("/{id}/report")
+    public long getUserChoreReport(@PathVariable Long id, @RequestParam String startDate, @RequestParam String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return reportService.getCompletedChoresCount(id, start, end);
     }
 }
