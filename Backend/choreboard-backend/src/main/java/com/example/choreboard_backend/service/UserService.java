@@ -32,4 +32,13 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    public List<User> searchUsersByUsername(String username) {
+        return userRepository.findByUsernameContainingIgnoreCase(username);
+    }
+
+    public int getUserPoints(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        return user != null ? user.getPoints() : 0;
+    }
 }

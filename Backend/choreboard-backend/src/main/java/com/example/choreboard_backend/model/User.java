@@ -25,6 +25,8 @@ public class User {
     @Email
     private String email;
 
+    private int points = 0; // Initialize with 0 points
+
     // Getters and setters
     public Long getId() {
         return id;
@@ -56,5 +58,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

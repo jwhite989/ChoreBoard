@@ -32,4 +32,14 @@ public class ChoreController {
     public void deleteChore(@PathVariable Long id) {
         choreService.deleteChore(id);
     }
+
+    @GetMapping("/search")
+    public List<Chore> searchChores(@RequestParam String status) {
+        return choreService.searchChoresByStatus(status);
+    }
+
+    @PutMapping("/{id}/complete")
+    public void completeChore(@PathVariable Long id) {
+        choreService.completeChore(id);
+    }
 }

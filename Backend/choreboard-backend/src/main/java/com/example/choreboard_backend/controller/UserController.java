@@ -32,4 +32,14 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+    @GetMapping("/search")
+    public List<User> searchUsers(@RequestParam String username) {
+        return userService.searchUsersByUsername(username);
+    }
+
+    @GetMapping("/{id}/points")
+    public int getUserPoints(@PathVariable Long id) {
+        return userService.getUserPoints(id);
+    }
 }
