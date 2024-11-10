@@ -1,16 +1,26 @@
 package com.example.choreboard_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Chore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
     private String title;
+
     private String description;
+
+    @NotBlank
     private String status;
+
+    @NotNull
     private int points;
+
     private String dueDate;
 
     @ManyToOne
