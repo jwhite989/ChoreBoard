@@ -1,0 +1,24 @@
+<div class="user-list-container">
+  <h2>Users</h2>
+
+  <div class="add-user-form">
+    <h3>Add New User</h3>
+    <form (ngSubmit)="createUser()">
+      <div class="form-group">
+        <input type="text" [(ngModel)]="newUser.username" name="username" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="password" [(ngModel)]="newUser.password" name="password" placeholder="Password" required>
+      </div>
+      <button type="submit">Add User</button>
+    </form>
+  </div>
+
+  <div class="users-grid">
+    <div *ngFor="let user of users" class="user-card">
+      <h3>{{ user.username }}</h3>
+      <p>Points: {{ user.points }}</p>
+      <button class="delete-btn" (click)="deleteUser(user.id)">Delete</button>
+    </div>
+  </div>
+</div>

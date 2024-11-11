@@ -1,0 +1,23 @@
+<div class="dashboard">
+  <section class="users-section">
+    <h2>Users Overview</h2>
+    <div class="user-list">
+      <div *ngFor="let user of users" class="user-card">
+        <h3>{{ user.username }}</h3>
+        <p>Points: {{ user.points }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chores-section">
+    <h2>Recent Chores</h2>
+    <div class="chore-list">
+      <div *ngFor="let chore of chores" class="chore-card">
+        <h3>{{ chore.title }}</h3>
+        <p>{{ chore.description }}</p>
+        <p>Points: {{ chore.points }}</p>
+        <p>Status: {{ chore.status }}</p>
+      </div>
+    </div>
+  </section>
+</div>
