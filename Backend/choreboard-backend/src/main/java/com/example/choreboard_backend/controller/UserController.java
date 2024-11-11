@@ -52,6 +52,6 @@ public class UserController {
     public long getUserChoreReport(@PathVariable Long id, @RequestParam String startDate, @RequestParam String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
-        return reportService.getCompletedChoresCount(id, start, end);
+        return reportService.getDetailedChoreReport(id, start, end).size();
     }
 }
