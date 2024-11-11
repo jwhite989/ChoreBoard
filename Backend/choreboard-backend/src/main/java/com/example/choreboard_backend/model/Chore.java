@@ -7,21 +7,12 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-public class Chore {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Chore extends BaseEntity {
     @NotBlank
     private String title;
 
-    private String description;
-
     @NotBlank
     private String status;
-
-    @NotNull
-    private int points;
 
     private String dueDate;
 
@@ -33,14 +24,6 @@ public class Chore {
 
     // Getters and setters
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -49,28 +32,12 @@ public class Chore {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public String getDueDate() {
@@ -96,5 +63,4 @@ public class Chore {
     public void setCompletedDate(LocalDate completedDate) {
         this.completedDate = completedDate;
     }
-
 }
