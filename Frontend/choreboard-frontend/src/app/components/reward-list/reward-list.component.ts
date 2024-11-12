@@ -16,6 +16,8 @@ import { User } from '../../models/user.interface';
 export class RewardListComponent implements OnInit {
   rewards: Reward[] = [];
   users: User[] = [];
+  selectedUser: User | null = null;
+  editingReward: Reward | null = null;
   newReward: Reward = {
     id: 0,
     title: '',
@@ -39,6 +41,42 @@ export class RewardListComponent implements OnInit {
 
   loadUsers(): void {
     this.userService.getAllUsers().subscribe((users: User[]) => this.users = users);
+  }
+
+  selectUser(user: User): void {
+    this.selectedUser = user;
+  }
+
+  canAffordReward(reward: Reward): boolean {
+    return this.selectedUser ? this.selectedUser.points >= reward.pointsCost : false;
+  }
+
+  redeemReward(reward: Reward): void {
+    if (this.selectedUser && this.canAffordReward(reward)) {
+      this.selectedUser.points -= reward.pointsCost;
+      this.userService.updateUser(this.selectedUser).subscribe(() => {
+        this.loadUsers();
+        // Reset selected user to refresh points
+        this.selectedUser = this.users.find(u => u.id === this.selectedUser?.id) || null;
+      });
+    }
+  }
+
+  startEditing(reward: Reward): void {
+    this.editingReward = { ...reward };
+  }
+
+  updateReward(): void {
+    if (this.editingReward) {
+      this.rewardService.updateReward(this.editingReward).subscribe(() => {
+        this.loadRewards();
+        this.editingReward = null;
+      });
+    }
+  }
+
+  cancelEditing(): void {
+    this.editingReward = null;
   }
 
   createReward(): void {

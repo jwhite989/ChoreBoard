@@ -7,7 +7,7 @@ import { Reward } from '../models/reward.interface';
   providedIn: 'root'
 })
 export class RewardService {
-  private apiUrl = 'http://localhost:8080/api/rewards';
+  private apiUrl = 'api/rewards';
 
   constructor(private http: HttpClient) {}
 
@@ -15,12 +15,12 @@ export class RewardService {
     return this.http.get<Reward[]>(this.apiUrl);
   }
 
-  getRewardById(id: number): Observable<Reward> {
-    return this.http.get<Reward>(`${this.apiUrl}/${id}`);
-  }
-
   createReward(reward: Reward): Observable<Reward> {
     return this.http.post<Reward>(this.apiUrl, reward);
+  }
+
+  updateReward(reward: Reward): Observable<Reward> {
+    return this.http.put<Reward>(`${this.apiUrl}/${reward.id}`, reward);
   }
 
   deleteReward(id: number): Observable<void> {

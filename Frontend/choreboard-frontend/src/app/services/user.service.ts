@@ -7,7 +7,7 @@ import { User } from '../models/user.interface';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = 'api/users';
 
   constructor(private http: HttpClient) {}
 
@@ -15,19 +15,15 @@ export class UserService {
     return this.http.get<User[]>(this.apiUrl);
   }
 
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
-  }
-
   createUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
   }
 
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${user.id}`, user);
   }
 
-  getUserPoints(id: number): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/${id}/points`);
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

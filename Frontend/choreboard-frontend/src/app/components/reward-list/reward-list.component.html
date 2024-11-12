@@ -1,6 +1,16 @@
 <div class="reward-list-container">
   <h2>Rewards</h2>
 
+  <div class="user-selector">
+    <h3>Select User</h3>
+    <select [(ngModel)]="selectedUser">
+      <option [ngValue]="null">Select a user</option>
+      <option *ngFor="let user of users" [ngValue]="user">
+        {{ user.username }} ({{ user.points }} points)
+      </option>
+    </select>
+  </div>
+
   <div class="add-reward-form">
     <h3>Add New Reward</h3>
     <form (ngSubmit)="createReward()">
@@ -36,14 +46,55 @@
 
   <div class="rewards-grid">
     <div *ngFor="let reward of rewards" class="reward-card">
-      <h3>{{ reward.title }}</h3>
-      <p>{{ reward.description }}</p>
-      <p>Points Cost: {{ reward.pointsCost }}</p>
-      <div class="button-group">
-        <button class="delete-btn" (click)="deleteReward(reward.id)">
-          Delete
-        </button>
+      <div *ngIf="editingReward?.id !== reward.id; else editForm">
+        <h3>{{ reward.title }}</h3>
+        <p>{{ reward.description }}</p>
+        <p>Cost: {{ reward.pointsCost }} points</p>
+        <div class="button-group">
+          <button
+            *ngIf="selectedUser"
+            [disabled]="!canAffordReward(reward)"
+            (click)="redeemReward(reward)"
+          >
+            Redeem
+          </button>
+          <button (click)="startEditing(reward)">Edit</button>
+          <button class="delete-btn" (click)="deleteReward(reward.id)">
+            Delete
+          </button>
+        </div>
       </div>
+      <ng-template #editForm>
+        <form *ngIf="editingReward" (ngSubmit)="updateReward()">
+          <div class="form-group">
+            <input
+              type="text"
+              [(ngModel)]="editingReward.title"
+              name="title"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              [(ngModel)]="editingReward.description"
+              name="description"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <input
+              type="number"
+              [(ngModel)]="editingReward.pointsCost"
+              name="pointsCost"
+              required
+            />
+          </div>
+          <div class="button-group">
+            <button type="submit">Save</button>
+            <button type="button" (click)="cancelEditing()">Cancel</button>
+          </div>
+        </form>
+      </ng-template>
     </div>
   </div>
 </div>

@@ -7,7 +7,7 @@ import { Chore } from '../models/chore.interface';
   providedIn: 'root'
 })
 export class ChoreService {
-  private apiUrl = 'http://localhost:8080/api/chores';
+  private apiUrl = 'api/chores';
 
   constructor(private http: HttpClient) {}
 
@@ -15,23 +15,23 @@ export class ChoreService {
     return this.http.get<Chore[]>(this.apiUrl);
   }
 
-  getChoreById(id: number): Observable<Chore> {
-    return this.http.get<Chore>(`${this.apiUrl}/${id}`);
+  getChoresByUser(userId: number): Observable<Chore[]> {
+    return this.http.get<Chore[]>(`${this.apiUrl}/user/${userId}`);
   }
 
   createChore(chore: Chore): Observable<Chore> {
     return this.http.post<Chore>(this.apiUrl, chore);
   }
 
+  updateChore(chore: Chore): Observable<Chore> {
+    return this.http.put<Chore>(`${this.apiUrl}/${chore.id}`, chore);
+  }
+
   deleteChore(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  searchChores(status: string): Observable<Chore[]> {
-    return this.http.get<Chore[]>(`${this.apiUrl}/search?status=${status}`);
-  }
-
-  completeChore(id: number): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}/complete`, {});
+  completeChore(id: number): Observable<Chore> {
+    return this.http.put<Chore>(`${this.apiUrl}/${id}/complete`, {});
   }
 }

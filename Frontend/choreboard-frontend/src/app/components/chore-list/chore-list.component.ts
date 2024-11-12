@@ -15,7 +15,10 @@ import { User } from '../../models/user.interface';
 })
 export class ChoreListComponent implements OnInit {
   chores: Chore[] = [];
+  filteredChores: Chore[] = [];
   users: User[] = [];
+  statusFilter: string = 'ALL';
+  editingChore: Chore | null = null;
   newChore: Chore = {
     id: 0,
     title: '',
@@ -36,11 +39,39 @@ export class ChoreListComponent implements OnInit {
   }
 
   loadChores(): void {
-    this.choreService.getAllChores().subscribe((chores: Chore[]) => this.chores = chores);
+    this.choreService.getAllChores().subscribe((chores: Chore[]) => {
+      this.chores = chores;
+      this.filterChores();
+    });
   }
 
   loadUsers(): void {
     this.userService.getAllUsers().subscribe((users: User[]) => this.users = users);
+  }
+
+  filterChores(): void {
+    if (this.statusFilter === 'ALL') {
+      this.filteredChores = this.chores;
+    } else {
+      this.filteredChores = this.chores.filter(chore => chore.status === this.statusFilter);
+    }
+  }
+
+  startEditing(chore: Chore): void {
+    this.editingChore = { ...chore };
+  }
+
+  updateChore(): void {
+    if (this.editingChore) {
+      this.choreService.updateChore(this.editingChore).subscribe(() => {
+        this.loadChores();
+        this.editingChore = null;
+      });
+    }
+  }
+
+  cancelEditing(): void {
+    this.editingChore = null;
   }
 
   createChore(): void {
