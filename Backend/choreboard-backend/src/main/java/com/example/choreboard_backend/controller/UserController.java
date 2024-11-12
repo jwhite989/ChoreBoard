@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -49,9 +50,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}/report")
-    public long getUserChoreReport(@PathVariable Long id, @RequestParam String startDate, @RequestParam String endDate) {
+    public Map<String, Object> getUserReport(@PathVariable Long id,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
-        return reportService.getDetailedChoreReport(id, start, end).size();
+        return reportService.generateReport(id, start, end);
     }
 }
