@@ -5,6 +5,7 @@ import { User } from '../models/user.interface';
 import { RegistrationRequest } from '../models/registration.interface';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Chore } from '../models/chore.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,9 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/${id}/report`, {
       params: { startDate, endDate }
     });
+  }
+
+  completeChore(id: number): Observable<Chore> {
+    return this.http.put<Chore>(`${this.apiUrl}/chores/${id}/complete`, {});
   }
 }

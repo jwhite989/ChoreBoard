@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reward } from '../models/reward.interface';
 
@@ -7,7 +7,7 @@ import { Reward } from '../models/reward.interface';
   providedIn: 'root'
 })
 export class RewardService {
-  private apiUrl = 'api/rewards';
+  private apiUrl = '/api/rewards';
 
   constructor(private http: HttpClient) {}
 
@@ -15,15 +15,32 @@ export class RewardService {
     return this.http.get<Reward[]>(this.apiUrl);
   }
 
+  getRewardById(id: number): Observable<Reward> {
+    return this.http.get<Reward>(`${this.apiUrl}/${id}`);
+  }
+
   createReward(reward: Reward): Observable<Reward> {
     return this.http.post<Reward>(this.apiUrl, reward);
   }
 
-  updateReward(reward: Reward): Observable<Reward> {
-    return this.http.put<Reward>(`${this.apiUrl}/${reward.id}`, reward);
-  }
-
   deleteReward(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getRewardReport(startDate?: string, endDate?: string): Observable<any> {
+    let params = new HttpParams();
+    if (startDate) params = params.set('startDate', startDate);
+    if (endDate) params = params.set('endDate', endDate);
+    return this.http.get<any>(`${this.apiUrl}/report`, { params });
+  }
+
+  redeemReward(rewardId: number, userId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${rewardId}/redeem`, null, {
+      params: { userId: userId.toString() }
+    });
+  }
+
+  updateReward(reward: Reward): Observable<Reward> {
+    return this.http.put<Reward>(`${this.apiUrl}/${reward.id}`, reward);
   }
 }

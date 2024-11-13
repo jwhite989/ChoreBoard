@@ -51,4 +51,12 @@ public class UserService {
         newUser.setPoints(0);
         return userRepository.save(newUser);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 }

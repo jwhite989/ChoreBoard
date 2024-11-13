@@ -4,6 +4,8 @@ import com.example.choreboard_backend.model.User;
 import com.example.choreboard_backend.service.ReportService;
 import com.example.choreboard_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.choreboard_backend.dto.UserRegistrationRequest;
+import com.example.choreboard_backend.dto.LoginRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -64,5 +67,14 @@ public class UserController {
     @PostMapping("/register")
     public User registerUser(@Valid @RequestBody UserRegistrationRequest registrationRequest) {
         return userService.registerUser(registrationRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        User user = userService.findByUsername(loginRequest.getUsername());
+        if (user != null && userService.checkPassword(loginRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.ok().body(user);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 }
