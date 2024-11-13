@@ -13,7 +13,7 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'api/auth';
+  private apiUrl = '/api/auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 

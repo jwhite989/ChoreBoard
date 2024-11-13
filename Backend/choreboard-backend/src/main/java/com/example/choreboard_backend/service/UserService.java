@@ -2,6 +2,7 @@ package com.example.choreboard_backend.service;
 
 import com.example.choreboard_backend.model.User;
 import com.example.choreboard_backend.repository.UserRepository;
+import com.example.choreboard_backend.dto.UserRegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,5 +41,14 @@ public class UserService {
     public int getUserPoints(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         return user != null ? user.getPoints() : 0;
+    }
+
+    public User registerUser(UserRegistrationRequest registrationRequest) {
+        User newUser = new User();
+        newUser.setUsername(registrationRequest.getUsername());
+        newUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        newUser.setEmail(registrationRequest.getEmail());
+        newUser.setPoints(0);
+        return userRepository.save(newUser);
     }
 }

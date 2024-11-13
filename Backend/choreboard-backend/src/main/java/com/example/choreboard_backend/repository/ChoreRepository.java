@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ChoreRepository extends JpaRepository<Chore, Long> {
     List<Chore> findByStatusContainingIgnoreCase(String status);
+    List<Chore> findByAssignedToId(Long userId);
 }

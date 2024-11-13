@@ -23,9 +23,19 @@ public class ChoreController {
         return choreService.getChoreById(id);
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Chore> getChoresByUser(@PathVariable Long userId) {
+        return choreService.getChoresByUser(userId);
+    }
+
     @PostMapping
     public Chore createChore(@RequestBody Chore chore) {
         return choreService.createChore(chore);
+    }
+
+    @PutMapping("/{id}")
+    public Chore updateChore(@PathVariable Long id, @RequestBody Chore chore) {
+        return choreService.updateChore(id, chore);
     }
 
     @DeleteMapping("/{id}")
@@ -39,7 +49,7 @@ public class ChoreController {
     }
 
     @PutMapping("/{id}/complete")
-    public void completeChore(@PathVariable Long id) {
-        choreService.completeChore(id);
+    public Chore completeChore(@PathVariable Long id) {
+        return choreService.completeChore(id);
     }
 }

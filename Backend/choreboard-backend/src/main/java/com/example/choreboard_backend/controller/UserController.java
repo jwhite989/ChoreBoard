@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.example.choreboard_backend.dto.UserRegistrationRequest;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -56,5 +59,10 @@ public class UserController {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         return reportService.generateReport(id, start, end);
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@Valid @RequestBody UserRegistrationRequest registrationRequest) {
+        return userService.registerUser(registrationRequest);
     }
 }

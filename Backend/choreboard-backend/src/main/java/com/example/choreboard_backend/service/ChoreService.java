@@ -37,14 +37,28 @@ public class ChoreService {
         return choreRepository.findByStatusContainingIgnoreCase(status);
     }
 
-    public void completeChore(Long choreId) {
+    public List<Chore> getChoresByUser(Long userId) {
+        return choreRepository.findByAssignedToId(userId);
+    }
+
+    public Chore updateChore(Long id, Chore chore) {
+        if (choreRepository.existsById(id)) {
+            chore.setId(id);
+            return choreRepository.save(chore);
+        }
+        return null;
+    }
+
+    public Chore completeChore(Long choreId) {
         Chore chore = choreRepository.findById(choreId).orElse(null);
         if (chore != null && chore.getAssignedTo() != null) {
             User user = chore.getAssignedTo();
             user.setPoints(user.getPoints() + chore.getPoints());
+            chore.setStatus("COMPLETED");
             chore.setCompletedDate(LocalDate.now());
-            choreRepository.save(chore);
             userRepository.save(user);
+            return choreRepository.save(chore);
         }
+        return null;
     }
 }
