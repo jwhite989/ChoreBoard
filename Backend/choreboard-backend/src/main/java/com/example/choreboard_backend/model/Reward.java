@@ -5,11 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "Rewards")
 public class Reward extends BaseEntity {
     @NotBlank
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull
+    @Column(name = "points_required")
     private int pointsRequired;
 
     // Getters and setters

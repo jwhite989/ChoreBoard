@@ -6,13 +6,17 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "Chores")
 public class Chore extends BaseEntity {
     @NotBlank
+    @Column(name = "title", nullable = false)
     private String title;
 
     @NotBlank
+    @Column(name = "status", columnDefinition = "ENUM('pending', 'completed')")
     private String status;
 
+    @Column(name = "due_date")
     private String dueDate;
 
     @ManyToOne

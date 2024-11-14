@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
 
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -11,8 +12,10 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "points")
     private int points;
 
     // Getters and setters

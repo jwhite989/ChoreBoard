@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.choreboard_backend.model.UserRole;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -49,6 +51,8 @@ public class UserService {
         newUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         newUser.setEmail(registrationRequest.getEmail());
         newUser.setPoints(0);
+        newUser.setRole(UserRole.child);
+        newUser.setCreatedAt(new Date());
         return userRepository.save(newUser);
     }
 
