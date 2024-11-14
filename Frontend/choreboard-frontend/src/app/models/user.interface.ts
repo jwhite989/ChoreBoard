@@ -3,4 +3,7 @@ export interface User {
     username: string;
     password: string;
     points: number;
+    email?: string;
+    role?: string;
+    createdAt?: Date;
   }

@@ -24,6 +24,9 @@
       </div>
       <button type="submit">Add User</button>
     </form>
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
   </div>
 
   <div class="users-grid">

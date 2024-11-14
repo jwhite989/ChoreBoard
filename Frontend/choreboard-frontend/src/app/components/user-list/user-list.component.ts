@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { ChoreService } from '../../services/chore.service';
 import { User } from '../../models/user.interface';
 import { Chore } from '../../models/chore.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-list',
@@ -18,6 +19,7 @@ export class UserListComponent implements OnInit {
   userChores: { [key: number]: Chore[] } = {};
   newUser: User = { id: 0, username: '', password: '', points: 0 };
   editingUser: User | null = null;
+  successMessage: string = '';
 
   constructor(
     private userService: UserService,
@@ -42,9 +44,22 @@ export class UserListComponent implements OnInit {
   }
 
   createUser(): void {
-    this.userService.createUser(this.newUser).subscribe(() => {
-      this.loadUsers();
-      this.newUser = { id: 0, username: '', password: '', points: 0 };
+    const registrationRequest = {
+      username: this.newUser.username,
+      password: this.newUser.password,
+      email: ''
+    };
+    
+    this.userService.registerUser(registrationRequest).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.newUser = { id: 0, username: '', password: '', points: 0 };
+        this.successMessage = 'User successfully created!';
+        setTimeout(() => this.successMessage = '', 3000); // Clear message after 3 seconds
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Failed to create user:', error);
+      }
     });
   }
 
