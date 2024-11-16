@@ -63,19 +63,28 @@ export class ChoreListComponent implements OnInit {
   }
 
   filterChores(): void {
+    console.log('=== Filter Debug ===');
+    console.log('Status Filter:', this.statusFilter);
+    
+    this.chores.forEach(chore => {
+        console.log(`Chore: ${chore.title}`);
+        console.log(`Status: ${chore.status}`);
+        console.log(`CompletedDate: ${chore.completedDate}`);
+        console.log('---');
+    });
+    
     if (this.statusFilter === 'ALL') {
-      this.filteredChores = this.chores.map(chore => ({
-        ...chore,
-        status: chore.completedDate ? 'COMPLETED' : chore.status
-      }));
+        this.filteredChores = this.chores;
     } else {
-      this.filteredChores = this.chores
-        .map(chore => ({
-          ...chore,
-          status: chore.completedDate ? 'COMPLETED' : chore.status
-        }))
-        .filter(chore => chore.status === this.statusFilter);
+        this.filteredChores = this.chores.filter(chore => {
+            const matches = chore.status.toUpperCase() === this.statusFilter;
+            console.log(`Filtering ${chore.title}: ${matches ? 'KEPT' : 'FILTERED OUT'}`);
+            return matches;
+        });
     }
+    
+    console.log('Filtered Results:', this.filteredChores);
+    console.log('=== End Filter Debug ===');
   }
 
   startEditing(chore: Chore): void {
@@ -118,18 +127,31 @@ export class ChoreListComponent implements OnInit {
 
   completeChore(id: number): void {
     const chore = this.chores.find(c => c.id === id);
-    if (chore && chore.status !== 'COMPLETED') {
+    if (chore && chore.status.toUpperCase() !== 'COMPLETED') {
       this.choreService.completeChore(id).subscribe({
         next: (response: Chore) => {
           const index = this.chores.findIndex(c => c.id === id);
           if (index !== -1) {
-            this.chores[index] = {...response, status: 'COMPLETED'};
+            this.chores[index] = response;
           }
           this.filterChores();
-          this.loadChores();
+          this.loadCurrentUser();
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error completing chore:', error);
+        }
+      });
+    }
+  }
+
+  loadCurrentUser(): void {
+    if (this.currentUser) {
+      this.userService.getUserByUsername(this.currentUser.username).subscribe({
+        next: (user: User) => {
+          this.authService.currentUser$.next(user);
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error loading user:', error);
         }
       });
     }

@@ -66,4 +66,8 @@ export class AuthService {
     console.log('Getting current user from storage:', userStr);
     return userStr ? JSON.parse(userStr) : null;
   }
+
+  updateCurrentUser(user: User): void {
+    this.currentUserSubject.next(user);
+  }
 }
