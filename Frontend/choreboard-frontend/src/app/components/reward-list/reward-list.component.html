@@ -93,4 +93,15 @@
       </ng-template>
     </div>
   </div>
+
+  <section class="redemption-history" *ngIf="currentUser">
+    <h3>Redemption History</h3>
+    <div class="redemption-list">
+      <div *ngFor="let redemption of redemptions" class="redemption-card">
+        <h4>{{ redemption.reward?.name }}</h4>
+        <p>Redeemed: {{ redemption.redeemedAt | date:'medium' }}</p>
+        <p>Points: {{ redemption.reward?.pointsRequired }}</p>
+      </div>
+    </div>
+  </section>
 </div>

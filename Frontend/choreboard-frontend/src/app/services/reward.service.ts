@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Reward } from '../models/reward.interface';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Redemption } from '../models/redemption.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,11 @@ export class RewardService {
 
   updateReward(reward: Reward): Observable<Reward> {
     return this.http.put<Reward>(`${this.apiUrl}/${reward.id}`, reward);
+  }
+
+  getRedemptions(userId?: number): Observable<Redemption[]> {
+    let params = new HttpParams();
+    if (userId) params = params.set('userId', userId.toString());
+    return this.http.get<Redemption[]>(`${this.apiUrl}/redemptions`, { params });
   }
 }

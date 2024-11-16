@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS Redemptions (
     user_id BIGINT,
     reward_id BIGINT,
     redeemed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     description VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (reward_id) REFERENCES rewards(id)
 );

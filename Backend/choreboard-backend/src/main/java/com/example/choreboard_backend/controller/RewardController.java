@@ -1,6 +1,7 @@
 package com.example.choreboard_backend.controller;
 
 import com.example.choreboard_backend.model.Reward;
+import com.example.choreboard_backend.model.Redemption;
 import com.example.choreboard_backend.service.RewardService;
 import com.example.choreboard_backend.service.RewardReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,10 @@ public class RewardController {
     @PutMapping("/{id}")
     public Reward updateReward(@PathVariable Long id, @RequestBody Reward reward) {
         return rewardService.updateReward(reward);
+    }
+
+    @GetMapping("/redemptions")
+    public List<Redemption> getRedemptions(@RequestParam(required = false) Long userId) {
+        return rewardService.getRedemptions(userId);
     }
 }

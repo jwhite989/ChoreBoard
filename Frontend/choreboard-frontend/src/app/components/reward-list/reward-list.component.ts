@@ -7,6 +7,7 @@ import { Reward } from '../../models/reward.interface';
 import { User } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Redemption } from '../../models/redemption.interface';
 
 
 
@@ -28,6 +29,7 @@ export class RewardListComponent implements OnInit {
     pointsRequired: 0
   };
   console = console;
+  redemptions: Redemption[] = [];
 
   constructor(
     private rewardService: RewardService,
@@ -38,6 +40,7 @@ export class RewardListComponent implements OnInit {
   ngOnInit(): void {
     this.loadRewards();
     this.loadCurrentUser();
+    this.loadRedemptions();
   }
 
   loadRewards(): void {
@@ -50,6 +53,19 @@ export class RewardListComponent implements OnInit {
       console.log('Current user loaded:', user);
       this.currentUser = user;
     });
+  }
+
+  loadRedemptions(): void {
+    if (this.currentUser) {
+      this.rewardService.getRedemptions(this.currentUser.id).subscribe({
+        next: (redemptions: Redemption[]) => {
+          this.redemptions = redemptions;
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error loading redemptions:', error);
+        }
+      });
+    }
   }
 
   redeemReward(reward: Reward): void {
@@ -71,6 +87,7 @@ export class RewardListComponent implements OnInit {
       next: () => {
         console.log('Reward redeemed successfully');
         this.loadCurrentUser();
+        this.loadRedemptions();
         alert('Reward redeemed successfully!');
       },
       error: (error: HttpErrorResponse) => {
