@@ -57,7 +57,8 @@ export class RewardListComponent implements OnInit {
 
   loadRedemptions(): void {
     if (this.currentUser) {
-      this.rewardService.getRedemptions(this.currentUser.id).subscribe({
+      const userId = this.currentUser.role === 'CHILD' ? this.currentUser.id : undefined;
+      this.rewardService.getRedemptions(userId).subscribe({
         next: (redemptions: Redemption[]) => {
           this.redemptions = redemptions;
         },
