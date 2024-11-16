@@ -1,5 +1,5 @@
 <div class="user-list-container">
-  <div class="add-user-form">
+  <div class="add-user-form" *ngIf="currentUser?.role !== 'CHILD'">
     <h3>Add New User</h3>
     <form (ngSubmit)="createUser()">
       <div class="form-group">
@@ -52,7 +52,7 @@
             </li>
           </ul>
         </div>
-        <div class="button-group">
+        <div class="button-group" *ngIf="currentUser?.role !== 'CHILD'">
           <button (click)="startEditing(user)">Edit</button>
           <button class="delete-btn" (click)="deleteUser(user.id)">Delete</button>
         </div>

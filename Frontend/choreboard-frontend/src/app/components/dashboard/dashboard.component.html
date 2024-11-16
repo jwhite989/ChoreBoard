@@ -4,6 +4,12 @@
     <button (click)="logout()" class="logout-button">Logout</button>
   </div>
   
+  <nav>
+    <a routerLink="/chores">Chores</a>
+    <a routerLink="/rewards">Rewards</a>
+    <a *ngIf="currentUser?.role !== 'CHILD'" routerLink="/users">Users</a>
+  </nav>
+
   <section class="users-section">
     <h2>Users Overview</h2>
     <div class="user-list">

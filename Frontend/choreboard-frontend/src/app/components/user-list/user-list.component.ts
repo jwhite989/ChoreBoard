@@ -7,6 +7,7 @@ import { User } from '../../models/user.interface';
 import { Chore } from '../../models/chore.interface';
 import { RegistrationRequest } from '../../models/registration.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -26,14 +27,19 @@ export class UserListComponent implements OnInit {
   };
   editingUser: User | null = null;
   successMessage: string = '';
+  currentUser: User | null = null;
 
   constructor(
     private userService: UserService,
-    private choreService: ChoreService
+    private choreService: ChoreService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadUsers();
+    this.authService.currentUser$.subscribe((user: User | null) => {
+      this.currentUser = user;
+    });
   }
 
   loadUsers(): void {

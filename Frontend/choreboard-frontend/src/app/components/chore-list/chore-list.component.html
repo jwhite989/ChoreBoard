@@ -9,7 +9,7 @@
     </select>
   </div>
 
-  <div class="add-chore-form">
+  <div class="add-chore-form" *ngIf="currentUser?.role !== 'CHILD'">
     <h3>Add New Chore</h3>
     <form (ngSubmit)="createChore()">
       <div class="form-group">
@@ -76,8 +76,8 @@
           >
             Mark Complete
           </button>
-          <button (click)="startEditing(chore)">Edit</button>
-          <button class="delete-btn" (click)="deleteChore(chore.id)">
+          <button *ngIf="currentUser?.role !== 'CHILD'" (click)="startEditing(chore)">Edit</button>
+          <button *ngIf="currentUser?.role !== 'CHILD'" class="delete-btn" (click)="deleteChore(chore.id)">
             Delete
           </button>
         </div>

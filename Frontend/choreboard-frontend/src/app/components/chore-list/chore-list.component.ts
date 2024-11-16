@@ -5,6 +5,7 @@ import { ChoreService } from '../../services/chore.service';
 import { UserService } from '../../services/user.service';
 import { Chore } from '../../models/chore.interface';
 import { User } from '../../models/user.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-chore-list',
@@ -28,15 +29,20 @@ export class ChoreListComponent implements OnInit {
     dueDate: '',
     assignedTo: null
   };
+  currentUser: User | null = null;
 
   constructor(
     private choreService: ChoreService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadChores();
     this.loadUsers();
+    this.authService.currentUser$.subscribe((user: User | null) => {
+      this.currentUser = user;
+    });
   }
 
   loadChores(): void {

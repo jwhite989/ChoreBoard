@@ -3,7 +3,9 @@
     <a routerLink="/" class="brand-logo">{{ title }}</a>
     <ul class="nav-links">
       <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-      <li><a routerLink="/users" routerLinkActive="active">Users</a></li>
+      <li *ngIf="currentUser?.role !== 'CHILD'">
+        <a routerLink="/users" routerLinkActive="active">Users</a>
+      </li>
       <li><a routerLink="/chores" routerLinkActive="active">Chores</a></li>
       <li><a routerLink="/rewards" routerLinkActive="active">Rewards</a></li>
     </ul>

@@ -1,7 +1,7 @@
 <div class="reward-list-container">
   <h2>Rewards</h2>
 
-  <div class="add-reward-form">
+  <div class="add-reward-form" *ngIf="currentUser?.role !== 'CHILD'">
     <h3>Add New Reward</h3>
     <form (ngSubmit)="createReward()">
       <div class="form-group">
@@ -42,13 +42,22 @@
         <p>Cost: {{ reward.pointsRequired }} points</p>
         <div class="button-group">
           <button
-            (click)="console.log('Button clicked'); redeemReward(reward)"
+            (click)="redeemReward(reward)"
             [disabled]="!currentUser || currentUser.points < reward.pointsRequired"
           >
             Redeem
           </button>
-          <button (click)="startEditing(reward)">Edit</button>
-          <button class="delete-btn" (click)="deleteReward(reward.id)">Delete</button>
+          <button 
+            *ngIf="currentUser?.role !== 'CHILD'" 
+            (click)="startEditing(reward)">
+            Edit
+          </button>
+          <button 
+            *ngIf="currentUser?.role !== 'CHILD'" 
+            class="delete-btn" 
+            (click)="deleteReward(reward.id)">
+            Delete
+          </button>
         </div>
       </div>
       <ng-template #editForm>
