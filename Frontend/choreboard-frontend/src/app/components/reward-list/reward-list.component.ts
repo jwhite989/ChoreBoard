@@ -43,7 +43,9 @@ export class RewardListComponent implements OnInit {
   }
 
   loadCurrentUser(): void {
-    this.authService.getCurrentUser().subscribe((user: User) => {
+    console.log('Loading current user...');
+    this.authService.currentUser$.subscribe((user: User | null) => {
+      console.log('Current user loaded:', user);
       this.currentUser = user;
     });
   }
