@@ -44,19 +44,23 @@
           <button
             *ngIf="currentUser?.role === 'CHILD'"
             (click)="redeemReward(reward)"
-            [disabled]="!currentUser || currentUser.points < reward.pointsRequired"
+            [disabled]="
+              !currentUser || currentUser.points < reward.pointsRequired
+            "
           >
             Redeem
           </button>
-          <button 
-            *ngIf="currentUser?.role !== 'CHILD'" 
-            (click)="startEditing(reward)">
+          <button
+            *ngIf="currentUser?.role !== 'CHILD'"
+            (click)="startEditing(reward)"
+          >
             Edit
           </button>
-          <button 
-            *ngIf="currentUser?.role !== 'CHILD'" 
-            class="delete-btn" 
-            (click)="deleteReward(reward.id)">
+          <button
+            *ngIf="currentUser?.role !== 'CHILD'"
+            class="delete-btn"
+            (click)="deleteReward(reward.id)"
+          >
             Delete
           </button>
         </div>
@@ -100,13 +104,16 @@
     <div class="redemption-list">
       <div *ngFor="let redemption of redemptions" class="redemption-card">
         <h4>{{ redemption.reward?.name }}</h4>
-        <p>Redeemed: {{ redemption.redeemedAt | date:'medium' }}</p>
+        <p>Redeemed: {{ redemption.redeemedAt | date : "shortDate" }}</p>
         <p>Points: {{ redemption.reward?.pointsRequired }}</p>
       </div>
     </div>
   </section>
 
-  <section class="child-report" *ngIf="currentUser?.role === 'CHILD' && childReport">
+  <section
+    class="child-report"
+    *ngIf="currentUser?.role === 'CHILD' && childReport"
+  >
     <h3>Your Activity Report</h3>
     <div class="report-card">
       <h4>{{ childReport.username }}'s Report</h4>
@@ -115,13 +122,14 @@
         <p>Current Points: {{ childReport.currentPoints }}</p>
         <p>Total Rewards Redeemed: {{ childReport.totalRewardsRedeemed }}</p>
       </div>
-      
+
       <div class="report-section">
         <h5>Recent Completed Chores</h5>
         <ul>
           <li *ngFor="let chore of childReport.completedChores">
-            {{ chore.name }} - {{ chore.points }} points
-            ({{ chore.completedDate | date:'medium' }})
+            {{ chore.name }} - {{ chore.points }} points ({{
+              chore.completedDate | date : "shortDate"
+            }})
           </li>
         </ul>
       </div>
@@ -132,8 +140,9 @@
           <li *ngFor="let reward of childReport.redeemedRewards">
             <div class="item-title">{{ reward.title }}</div>
             <div class="item-details">
-              {{ reward.name }} - {{ reward.pointsCost }} points
-              ({{ reward.redeemedAt | date:'medium' }})
+              {{ reward.name }} - {{ reward.pointsCost }} points ({{
+                reward.redeemedAt | date : "shortDate"
+              }})
             </div>
           </li>
         </ul>

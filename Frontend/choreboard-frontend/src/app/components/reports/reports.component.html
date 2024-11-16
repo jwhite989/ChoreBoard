@@ -2,12 +2,12 @@
   <h2>Child Reports</h2>
 
   <div class="search-section">
-    <input 
-      type="text" 
-      [(ngModel)]="searchUsername" 
+    <input
+      type="text"
+      [(ngModel)]="searchUsername"
       placeholder="Enter child's username"
       (keyup.enter)="searchChildReport()"
-    >
+    />
     <button (click)="searchChildReport()">Search</button>
   </div>
 
@@ -21,15 +21,16 @@
         <p>Current Points: {{ childReport.currentPoints }}</p>
         <p>Total Rewards Redeemed: {{ childReport.totalRewardsRedeemed }}</p>
       </div>
-      
+
       <div class="report-section">
         <h4>Recent Completed Chores</h4>
         <ul>
           <li *ngFor="let chore of childReport.completedChores">
             <div class="item-title">{{ chore.title }}</div>
             <div class="item-details">
-              {{ chore.name }} - {{ chore.points }} points
-              ({{ chore.completedDate | date:'medium' }})
+              {{ chore.name }} - {{ chore.points }} points ({{
+                chore.completedDate | date : "shortDate"
+              }})
             </div>
           </li>
         </ul>
@@ -41,12 +42,13 @@
           <li *ngFor="let reward of childReport.redeemedRewards">
             <div class="item-title">{{ reward.title }}</div>
             <div class="item-details">
-              {{ reward.name }} - {{ reward.pointsCost }} points
-              ({{ reward.redeemedAt | date:'medium' }})
+              {{ reward.name }} - {{ reward.pointsCost }} points ({{
+                reward.redeemedAt | date : "shortDate"
+              }})
             </div>
           </li>
         </ul>
       </div>
     </div>
   </section>
-</div> 
+</div>
