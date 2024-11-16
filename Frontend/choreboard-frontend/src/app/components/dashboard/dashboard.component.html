@@ -22,6 +22,8 @@
         <p>{{ chore.description }}</p>
         <p>Points: {{ chore.points }}</p>
         <p>Status: {{ chore.status }}</p>
+        <p *ngIf="chore.dueDate">Due Date: {{ chore.dueDate }}</p>
+        <p *ngIf="chore.completedDate">Completed: {{ chore.completedDate }}</p>
       </div>
     </div>
   </section>

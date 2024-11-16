@@ -25,6 +25,7 @@ export class ChoreListComponent implements OnInit {
     description: '',
     points: 0,
     status: 'PENDING',
+    dueDate: '',
     assignedTo: null
   };
 
@@ -83,6 +84,7 @@ export class ChoreListComponent implements OnInit {
         description: '',
         points: 0,
         status: 'PENDING',
+        dueDate: '',
         assignedTo: null
       };
     });

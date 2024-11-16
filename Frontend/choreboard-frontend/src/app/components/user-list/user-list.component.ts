@@ -57,13 +57,12 @@ export class UserListComponent implements OnInit {
           username: '',
           password: '',
           email: '',
-          role: 'CHILD' as 'ADMIN' | 'PARENT' | 'CHILD'
+          role: 'CHILD'
         };
-        this.successMessage = 'User successfully created!';
-        setTimeout(() => this.successMessage = '', 3000);
+        this.successMessage = 'User created successfully!';
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Failed to create user:', error);
+        console.error('Error creating user:', error);
       }
     });
   }
@@ -89,15 +88,5 @@ export class UserListComponent implements OnInit {
     this.userService.deleteUser(id).subscribe(() => {
       this.loadUsers();
     });
-  }
-
-  adjustPoints(userId: number, points: number): void {
-    const user = this.users.find(u => u.id === userId);
-    if (user) {
-      user.points += points;
-      this.userService.updateUser(user).subscribe(() => {
-        this.loadUsers();
-      });
-    }
   }
 }

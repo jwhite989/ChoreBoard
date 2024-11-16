@@ -6,5 +6,7 @@ export interface Chore {
   description: string;
   points: number;
   status: string;
+  dueDate: string;
+  completedDate?: string;
   assignedTo: User | null;
 }

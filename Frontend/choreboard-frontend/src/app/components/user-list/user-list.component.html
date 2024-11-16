@@ -1,6 +1,4 @@
 <div class="user-list-container">
-  <h2>Users</h2>
-
   <div class="add-user-form">
     <h3>Add New User</h3>
     <form (ngSubmit)="createUser()">
@@ -22,11 +20,23 @@
           required
         />
       </div>
+      <div class="form-group">
+        <input
+          type="email"
+          [(ngModel)]="newUser.email"
+          name="email"
+          placeholder="Email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <select [(ngModel)]="newUser.role" name="role" required>
+          <option value="CHILD">Child</option>
+          <option value="PARENT">Parent</option>
+        </select>
+      </div>
       <button type="submit">Add User</button>
     </form>
-    <div *ngIf="successMessage" class="success-message">
-      {{ successMessage }}
-    </div>
   </div>
 
   <div class="users-grid">
@@ -34,10 +44,6 @@
       <div *ngIf="editingUser?.id !== user.id; else editForm">
         <h3>{{ user.username }}</h3>
         <p>Points: {{ user.points }}</p>
-        <div class="points-controls">
-          <button (click)="adjustPoints(user.id, -10)">-10</button>
-          <button (click)="adjustPoints(user.id, 10)">+10</button>
-        </div>
         <div class="assigned-chores" *ngIf="userChores[user.id]?.length">
           <h4>Assigned Chores:</h4>
           <ul>
@@ -48,9 +54,7 @@
         </div>
         <div class="button-group">
           <button (click)="startEditing(user)">Edit</button>
-          <button class="delete-btn" (click)="deleteUser(user.id)">
-            Delete
-          </button>
+          <button class="delete-btn" (click)="deleteUser(user.id)">Delete</button>
         </div>
       </div>
       <ng-template #editForm>

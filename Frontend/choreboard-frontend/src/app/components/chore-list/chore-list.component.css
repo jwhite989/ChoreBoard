@@ -66,3 +66,17 @@ button:hover {
 .delete-btn:hover {
   background-color: #da190b;
 }
+
+.complete-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.complete-button:hover {
+  background-color: #45a049;
+}
