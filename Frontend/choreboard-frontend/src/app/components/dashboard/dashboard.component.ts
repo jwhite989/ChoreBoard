@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { ChoreService } from '../../services/chore.service';
@@ -7,6 +7,7 @@ import { Chore } from '../../models/chore.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,9 +16,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   users: User[] = [];
   chores: Chore[] = [];
+  currentUser: User | null = null;
+  private userSubscription?: Subscription;
 
   constructor(
     private userService: UserService,
@@ -27,19 +30,35 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadDashboardData();
-  }
-
-
-  loadDashboardData(): void {
-    this.userService.getAllUsers().subscribe({
-      next: (users: User[]) => this.users = users,
-      error: (error: HttpErrorResponse) => {
-        if (error.status !== 401) {
-          console.error('Error loading users:', error);
-        }
+    this.userSubscription = this.authService.currentUser$.subscribe((user: User | null) => {
+      this.currentUser = user;
+      if (user) {
+        this.loadDashboardData();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  loadDashboardData(): void {
+    if (this.currentUser?.role === 'CHILD') {
+      // If user is a child, only show their own data
+      this.users = [this.currentUser];
+    } else {
+      // If user is a parent or admin, show all users
+      this.userService.getAllUsers().subscribe({
+        next: (users: User[]) => this.users = users,
+        error: (error: HttpErrorResponse) => {
+          if (error.status !== 401) {
+            console.error('Error loading users:', error);
+          }
+        }
+      });
+    }
 
     this.choreService.getAllChores().subscribe({
       next: (chores: Chore[]) => this.chores = chores,
