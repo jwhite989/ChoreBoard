@@ -18,14 +18,15 @@ export class RegisterComponent {
   registrationRequest: RegistrationRequest = {
     username: '',
     password: '',
-    email: ''
+    email: '',
+    role: 'CHILD' as 'ADMIN' | 'PARENT' | 'CHILD'
   };
+  roles: Array<'ADMIN' | 'PARENT' | 'CHILD'> = ['ADMIN', 'PARENT', 'CHILD'];
   error: string = '';
 
   constructor(private userService: UserService, private router: Router) {}
 
   register(): void {
-    console.log('Register function called');
     console.log('Registration data:', this.registrationRequest);
     
     this.userService.registerUser(this.registrationRequest).subscribe({

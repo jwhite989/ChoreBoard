@@ -31,7 +31,8 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         },
         error: (err: HttpErrorResponse) => {
-          this.error = 'Invalid username or password';
+          console.error('Login error:', err);
+          this.error = err.error?.message || 'Invalid username or password';
         }
       });
   }

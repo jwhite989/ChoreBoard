@@ -7,7 +7,7 @@ import { Reward } from '../models/reward.interface';
   providedIn: 'root'
 })
 export class RewardService {
-  private apiUrl = '/api/rewards';
+  private apiUrl = 'http://localhost:8080/api/rewards';
 
   constructor(private http: HttpClient) {}
 

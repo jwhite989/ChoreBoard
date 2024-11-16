@@ -7,7 +7,7 @@ import { Chore } from '../models/chore.interface';
   providedIn: 'root'
 })
 export class ChoreService {
-  private apiUrl = '/api/chores';
+  private apiUrl = 'http://localhost:8080/api/chores';
 
   constructor(private http: HttpClient) {}
 

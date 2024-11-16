@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { ChoreService } from '../../services/chore.service';
 import { User } from '../../models/user.interface';
 import { Chore } from '../../models/chore.interface';
+import { RegistrationRequest } from '../../models/registration.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -17,7 +18,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class UserListComponent implements OnInit {
   users: User[] = [];
   userChores: { [key: number]: Chore[] } = {};
-  newUser: User = { id: 0, username: '', password: '', points: 0 };
+  newUser: RegistrationRequest = {
+    username: '',
+    password: '',
+    email: '',
+    role: 'CHILD' as 'ADMIN' | 'PARENT' | 'CHILD'
+  };
   editingUser: User | null = null;
   successMessage: string = '';
 
@@ -44,18 +50,17 @@ export class UserListComponent implements OnInit {
   }
 
   createUser(): void {
-    const registrationRequest = {
-      username: this.newUser.username,
-      password: this.newUser.password,
-      email: ''
-    };
-    
-    this.userService.registerUser(registrationRequest).subscribe({
+    this.userService.registerUser(this.newUser).subscribe({
       next: () => {
         this.loadUsers();
-        this.newUser = { id: 0, username: '', password: '', points: 0 };
+        this.newUser = {
+          username: '',
+          password: '',
+          email: '',
+          role: 'CHILD' as 'ADMIN' | 'PARENT' | 'CHILD'
+        };
         this.successMessage = 'User successfully created!';
-        setTimeout(() => this.successMessage = '', 3000); // Clear message after 3 seconds
+        setTimeout(() => this.successMessage = '', 3000);
       },
       error: (error: HttpErrorResponse) => {
         console.error('Failed to create user:', error);

@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User } from '../models/user.interface';
+
+interface LoginResponse {
+  id: number;
+  username: string;
+  role: string;
+  points: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'http://localhost:8080/api/users';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -18,14 +26,30 @@ export class AuthService {
     }
   }
 
-  login(username: string, password: string): Observable<User> {
-    return this.http.post<User>('/api/users/login', { username, password })
-      .pipe(
-        tap((user: User) => {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-        })
-      );
+  login(username: string, password: string): Observable<LoginResponse> {
+    const authData = btoa(`${username}:${password}`);
+    console.log('Login - Auth Data:', authData);
+    
+    // Create initial user object
+    const user = { username, authData };
+    
+    console.log('Login Request Details:', {
+      url: `${this.apiUrl}/login`,
+      body: { username, password },
+      authHeader: `Basic ${authData}`
+    });
+    
+    return this.http.post<LoginResponse>(
+      `${this.apiUrl}/login`, 
+      { username, password }
+    ).pipe(
+      tap((response: LoginResponse) => {
+        const fullUser = { ...user, ...response };
+        console.log('Login successful - Storing user data:', fullUser);
+        localStorage.setItem('currentUser', JSON.stringify(fullUser));
+        this.currentUserSubject.next(fullUser);
+      })
+    );
   }
 
   logout(): void {
@@ -37,7 +61,9 @@ export class AuthService {
     return !!this.currentUserSubject.value;
   }
 
-  getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
+  getCurrentUser(): any {
+    const userStr = localStorage.getItem('currentUser');
+    console.log('Getting current user from storage:', userStr);
+    return userStr ? JSON.parse(userStr) : null;
   }
 }

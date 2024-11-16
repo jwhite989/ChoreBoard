@@ -3,6 +3,7 @@ package com.example.choreboard_backend.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import com.example.choreboard_backend.model.UserRole;
 
 public class UserRegistrationRequest {
     @NotBlank
@@ -15,6 +16,8 @@ public class UserRegistrationRequest {
 
     @Email
     private String email;
+    
+    private UserRole role;
 
     // Getters and setters
     public String getUsername() {
@@ -39,5 +42,13 @@ public class UserRegistrationRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }

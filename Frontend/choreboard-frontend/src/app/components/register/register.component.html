@@ -28,6 +28,16 @@
         required
       />
     </div>
+    <div class="form-group">
+      <select
+        [(ngModel)]="registrationRequest.role"
+        name="role"
+        required>
+        <option *ngFor="let role of roles" [value]="role">
+          {{role}}
+        </option>
+      </select>
+    </div>
     <div class="error" *ngIf="error">{{ error }}</div>
     <button type="submit">Register</button>
   </form>

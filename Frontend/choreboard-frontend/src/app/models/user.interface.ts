@@ -4,6 +4,7 @@ export interface User {
     password: string;
     points: number;
     email?: string;
-    role?: string;
+    role: string;
+    authData?: string;
     createdAt?: Date;
   }
