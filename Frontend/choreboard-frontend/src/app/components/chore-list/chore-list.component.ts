@@ -126,21 +126,34 @@ export class ChoreListComponent implements OnInit {
   }
 
   completeChore(id: number): void {
+    console.log('=== Complete Chore Debug ===');
+    console.log('Starting completeChore with id:', id);
     const chore = this.chores.find(c => c.id === id);
+    console.log('Found chore:', chore);
+    
     if (chore && chore.status.toUpperCase() !== 'COMPLETED') {
-      this.choreService.completeChore(id).subscribe({
-        next: (response: Chore) => {
-          const index = this.chores.findIndex(c => c.id === id);
-          if (index !== -1) {
-            this.chores[index] = response;
-          }
-          this.filterChores();
-          this.loadCurrentUser();
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error completing chore:', error);
-        }
-      });
+        this.choreService.completeChore(id).subscribe({
+            next: (response: Chore) => {
+                console.log('Chore completion response:', response);
+                console.log('Response assigned user:', response.assignedTo);
+                
+                const index = this.chores.findIndex(c => c.id === id);
+                if (index !== -1) {
+                    this.chores[index] = response;
+                }
+                this.filterChores();
+                
+                if (this.currentUser && response.assignedTo) {
+                    console.log('Current user before update:', this.currentUser);
+                    this.currentUser.points = response.assignedTo.points;
+                    console.log('Current user after points update:', this.currentUser);
+                    this.authService.updateCurrentUser(this.currentUser);
+                }
+            },
+            error: (error: HttpErrorResponse) => {
+                console.error('Error completing chore:', error);
+            }
+        });
     }
   }
 

@@ -33,11 +33,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log('=== Dashboard Init Debug ===');
+    console.log('Initial users array:', this.users);
+    
+    this.loadDashboardData();
+    
     this.userSubscription = this.authService.currentUser$.subscribe((user: User | null) => {
-      this.currentUser = user;
-      if (user) {
-        this.loadDashboardData();
-      }
+        console.log('Dashboard received user update:', user);
+        this.currentUser = user;
+        if (user) {
+            console.log('Users array before update:', this.users);
+            if (user.role === 'CHILD') {
+                const index = this.users.findIndex(u => u.id === user.id);
+                console.log('Found user index:', index);
+                if (index !== -1) {
+                    this.users[index] = user;
+                } else {
+                    this.users = [user];
+                }
+            }
+            console.log('Users array after update:', this.users);
+        }
     });
   }
 
@@ -49,25 +65,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   loadDashboardData(): void {
     if (this.currentUser?.role === 'CHILD') {
-      // If user is a child, only show their own data
-      this.users = [this.currentUser];
+        // If user is a child, only show their own data
+        this.users = [this.currentUser];
     } else {
-      // If user is a parent or admin, show all users
-      this.userService.getAllUsers().subscribe({
-        next: (users: User[]) => this.users = users,
-        error: (error: HttpErrorResponse) => {
-          if (error.status !== 401) {
-            console.error('Error loading users:', error);
-          }
-        }
-      });
+        // If user is a parent or admin, show all users
+        this.userService.getAllUsers().subscribe({
+            next: (users: User[]) => this.users = users,
+            error: (error: HttpErrorResponse) => {
+                console.error('Error loading users:', error);
+            }
+        });
     }
 
+    // Load chores regardless of user role
     this.choreService.getAllChores().subscribe({
-      next: (chores: Chore[]) => this.chores = chores,
-      error: (error: HttpErrorResponse) => {
-        console.error('Error loading chores:', error);
-      }
+        next: (chores: Chore[]) => this.chores = chores,
+        error: (error: HttpErrorResponse) => {
+            console.error('Error loading chores:', error);
+        }
     });
   }
 
