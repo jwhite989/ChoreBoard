@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.service';
 import { Chore } from '../../models/chore.interface';
 import { User } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-chore-list',
@@ -46,9 +47,14 @@ export class ChoreListComponent implements OnInit {
   }
 
   loadChores(): void {
-    this.choreService.getAllChores().subscribe((chores: Chore[]) => {
-      this.chores = chores;
-      this.filterChores();
+    this.choreService.getAllChores().subscribe({
+      next: (chores: Chore[]) => {
+        this.chores = chores;
+        this.filterChores();
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error loading chores:', error);
+      }
     });
   }
 
@@ -58,9 +64,17 @@ export class ChoreListComponent implements OnInit {
 
   filterChores(): void {
     if (this.statusFilter === 'ALL') {
-      this.filteredChores = this.chores;
+      this.filteredChores = this.chores.map(chore => ({
+        ...chore,
+        status: chore.completedDate ? 'COMPLETED' : chore.status
+      }));
     } else {
-      this.filteredChores = this.chores.filter(chore => chore.status === this.statusFilter);
+      this.filteredChores = this.chores
+        .map(chore => ({
+          ...chore,
+          status: chore.completedDate ? 'COMPLETED' : chore.status
+        }))
+        .filter(chore => chore.status === this.statusFilter);
     }
   }
 
@@ -103,8 +117,21 @@ export class ChoreListComponent implements OnInit {
   }
 
   completeChore(id: number): void {
-    this.choreService.completeChore(id).subscribe(() => {
-      this.loadChores();
-    });
+    const chore = this.chores.find(c => c.id === id);
+    if (chore && chore.status !== 'COMPLETED') {
+      this.choreService.completeChore(id).subscribe({
+        next: (response: Chore) => {
+          const index = this.chores.findIndex(c => c.id === id);
+          if (index !== -1) {
+            this.chores[index] = {...response, status: 'COMPLETED'};
+          }
+          this.filterChores();
+          this.loadChores();
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error completing chore:', error);
+        }
+      });
+    }
   }
 }

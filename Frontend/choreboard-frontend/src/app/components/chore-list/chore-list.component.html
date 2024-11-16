@@ -65,14 +65,14 @@
         <p>{{ chore.description }}</p>
         <p>Points: {{ chore.points }}</p>
         <p>Status: {{ chore.status }}</p>
-        <p *ngIf="chore.assignedTo">
-          Assigned to: {{ chore.assignedTo.username }}
-        </p>
+        <p *ngIf="chore.dueDate">Due Date: {{ chore.dueDate }}</p>
+        <p *ngIf="chore.completedDate">Completed: {{ chore.completedDate }}</p>
         <div class="button-group">
-          <button
-            *ngIf="chore.status !== 'COMPLETED'"
+          <button 
             (click)="completeChore(chore.id)"
+            [disabled]="chore.status === 'COMPLETED' || chore.completedDate"
             class="complete-button"
+            *ngIf="currentUser?.role === 'CHILD' && (!chore.assignedTo || chore.assignedTo?.id === currentUser?.id)"
           >
             Mark Complete
           </button>
