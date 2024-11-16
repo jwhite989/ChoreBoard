@@ -74,43 +74,48 @@ export class RewardListComponent implements OnInit {
 
   loadChildReport(): void {
     if (this.currentUser?.role === 'CHILD') {
-      this.rewardService.getChildReport(this.currentUser.id).subscribe({
-        next: (report: ChildReport) => {
-          this.childReport = report;
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error loading child report:', error);
-        }
-      });
+        this.rewardService.getChildReport(this.currentUser.id).subscribe({
+            next: (report: ChildReport) => {
+                this.childReport = report;
+            },
+            error: (error: HttpErrorResponse) => {
+                console.error('Error loading child report:', error);
+            }
+        });
     }
   }
 
   redeemReward(reward: Reward): void {
-    console.log('Redeem button clicked');
+    console.log('=== Redeem Reward Debug ===');
     console.log('Current user:', this.currentUser);
     console.log('Reward:', reward);
 
     if (!this.currentUser) {
-      alert('Please log in to redeem rewards');
-      return;
+        alert('Please log in to redeem rewards');
+        return;
     }
 
     if (this.currentUser.points < reward.pointsRequired) {
-      alert(`You need ${reward.pointsRequired} points to redeem this reward. You currently have ${this.currentUser.points} points.`);
-      return;
+        alert(`You need ${reward.pointsRequired} points to redeem this reward. You currently have ${this.currentUser.points} points.`);
+        return;
     }
 
     this.rewardService.redeemReward(reward.id, this.currentUser.id).subscribe({
-      next: () => {
-        console.log('Reward redeemed successfully');
-        this.loadCurrentUser();
-        this.loadRedemptions();
-        alert('Reward redeemed successfully!');
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error redeeming reward:', error);
-        alert('Failed to redeem reward: ' + error.message);
-      }
+        next: (response: void) => {
+            console.log('Reward redeemed successfully');
+            if (this.currentUser) {
+                // Update points after redemption
+                this.currentUser.points -= reward.pointsRequired;
+                this.authService.updateCurrentUser(this.currentUser);
+            }
+            this.loadRedemptions();
+            this.loadChildReport();
+            alert('Reward redeemed successfully!');
+        },
+        error: (error: HttpErrorResponse) => {
+            console.error('Error redeeming reward:', error);
+            alert('Failed to redeem reward: ' + error.message);
+        }
     });
   }
 
