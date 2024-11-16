@@ -15,7 +15,7 @@
     <div class="user-list">
       <div *ngFor="let user of users" class="user-card">
         <h3>{{ user.username }}</h3>
-        <p>Points: {{ user.points }}</p>
+        <p *ngIf="user.role === 'CHILD'">Points: {{ user.points }}</p>
       </div>
     </div>
   </section>
