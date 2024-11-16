@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   chores: Chore[] = [];
   currentUser: User | null = null;
   private userSubscription?: Subscription;
-  parentReport: Report | null = null;
 
   constructor(
     private userService: UserService,
@@ -40,7 +39,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loadDashboardData();
       }
     });
-    this.loadParentReport();
   }
 
   ngOnDestroy(): void {
@@ -76,25 +74,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
-  }
-
-  loadParentReport(): void {
-    if (this.currentUser?.role === 'PARENT') {
-      const startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 1);
-      
-      this.userService.getUserReport(
-        this.currentUser.id,
-        startDate.toISOString().split('T')[0],
-        new Date().toISOString().split('T')[0]
-      ).subscribe({
-        next: (report: Report) => {
-          this.parentReport = report;
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error loading parent report:', error);
-        }
-      });
-    }
   }
 }

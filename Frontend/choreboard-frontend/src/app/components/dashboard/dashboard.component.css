@@ -49,34 +49,6 @@ h2 {
   background-color: #c82333;
 }
 
-.parent-report {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-}
-
-.report-card {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.report-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.stat-card {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 4px;
-  text-align: center;
-}
-
 .report-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
