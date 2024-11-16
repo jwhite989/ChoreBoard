@@ -130,8 +130,11 @@
         <h5>Recent Redeemed Rewards</h5>
         <ul>
           <li *ngFor="let reward of childReport.redeemedRewards">
-            {{ reward.name }} - {{ reward.pointsCost }} points
-            ({{ reward.redeemedAt | date:'medium' }})
+            <div class="item-title">{{ reward.title }}</div>
+            <div class="item-details">
+              {{ reward.name }} - {{ reward.pointsCost }} points
+              ({{ reward.redeemedAt | date:'medium' }})
+            </div>
           </li>
         </ul>
       </div>

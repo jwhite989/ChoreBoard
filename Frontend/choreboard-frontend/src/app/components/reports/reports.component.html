@@ -26,8 +26,11 @@
         <h4>Recent Completed Chores</h4>
         <ul>
           <li *ngFor="let chore of childReport.completedChores">
-            {{ chore.name }} - {{ chore.points }} points
-            ({{ chore.completedDate | date:'medium' }})
+            <div class="item-title">{{ chore.title }}</div>
+            <div class="item-details">
+              {{ chore.name }} - {{ chore.points }} points
+              ({{ chore.completedDate | date:'medium' }})
+            </div>
           </li>
         </ul>
       </div>
@@ -36,8 +39,11 @@
         <h4>Recent Redeemed Rewards</h4>
         <ul>
           <li *ngFor="let reward of childReport.redeemedRewards">
-            {{ reward.name }} - {{ reward.pointsCost }} points
-            ({{ reward.redeemedAt | date:'medium' }})
+            <div class="item-title">{{ reward.title }}</div>
+            <div class="item-details">
+              {{ reward.name }} - {{ reward.pointsCost }} points
+              ({{ reward.redeemedAt | date:'medium' }})
+            </div>
           </li>
         </ul>
       </div>
