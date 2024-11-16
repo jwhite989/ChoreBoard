@@ -5,6 +5,7 @@ import { RewardService } from '../../services/reward.service';
 import { UserService } from '../../services/user.service';
 import { Reward } from '../../models/reward.interface';
 import { User } from '../../models/user.interface';
+import { AuthService } from '../../services/auth.service';
 
 
 
@@ -17,8 +18,7 @@ import { User } from '../../models/user.interface';
 })
 export class RewardListComponent implements OnInit {
   rewards: Reward[] = [];
-  users: User[] = [];
-  selectedUser: User | null = null;
+  currentUser: User | null = null;
   editingReward: Reward | null = null;
   newReward: Reward = {
     id: 0,
@@ -29,37 +29,29 @@ export class RewardListComponent implements OnInit {
 
   constructor(
     private rewardService: RewardService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadRewards();
-    this.loadUsers();
+    this.loadCurrentUser();
   }
 
   loadRewards(): void {
     this.rewardService.getAllRewards().subscribe((rewards: Reward[]) => this.rewards = rewards);
   }
 
-  loadUsers(): void {
-    this.userService.getAllUsers().subscribe((users: User[]) => this.users = users);
-  }
-
-  selectUser(user: User): void {
-    this.selectedUser = user;
-  }
-
-  canAffordReward(reward: Reward): boolean {
-    return this.selectedUser ? this.selectedUser.points >= reward.pointsRequired : false;
+  loadCurrentUser(): void {
+    this.authService.getCurrentUser().subscribe((user: User) => {
+      this.currentUser = user;
+    });
   }
 
   redeemReward(reward: Reward): void {
-    if (this.selectedUser && this.canAffordReward(reward)) {
-      this.selectedUser.points -= reward.pointsRequired;
-      this.userService.updateUser(this.selectedUser).subscribe(() => {
-        this.loadUsers();
-        // Reset selected user to refresh points
-        this.selectedUser = this.users.find(u => u.id === this.selectedUser?.id) || null;
+    if (this.currentUser && this.currentUser.points >= reward.pointsRequired) {
+      this.rewardService.redeemReward(reward.id, this.currentUser.id).subscribe(() => {
+        this.loadCurrentUser();
       });
     }
   }

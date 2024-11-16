@@ -1,16 +1,6 @@
 <div class="reward-list-container">
   <h2>Rewards</h2>
 
-  <div class="user-selector">
-    <h3>Select User</h3>
-    <select [(ngModel)]="selectedUser">
-      <option [ngValue]="null">Select a user</option>
-      <option *ngFor="let user of users" [ngValue]="user">
-        {{ user.username }} ({{ user.points }} points)
-      </option>
-    </select>
-  </div>
-
   <div class="add-reward-form">
     <h3>Add New Reward</h3>
     <form (ngSubmit)="createReward()">
@@ -52,16 +42,13 @@
         <p>Cost: {{ reward.pointsRequired }} points</p>
         <div class="button-group">
           <button
-            *ngIf="selectedUser"
-            [disabled]="!canAffordReward(reward)"
             (click)="redeemReward(reward)"
+            [disabled]="!currentUser || currentUser.points < reward.pointsRequired"
           >
             Redeem
           </button>
           <button (click)="startEditing(reward)">Edit</button>
-          <button class="delete-btn" (click)="deleteReward(reward.id)">
-            Delete
-          </button>
+          <button class="delete-btn" (click)="deleteReward(reward.id)">Delete</button>
         </div>
       </div>
       <ng-template #editForm>
