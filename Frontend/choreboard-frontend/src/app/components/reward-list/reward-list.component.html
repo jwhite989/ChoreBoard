@@ -105,4 +105,36 @@
       </div>
     </div>
   </section>
+
+  <section class="child-report" *ngIf="currentUser?.role === 'CHILD' && childReport">
+    <h3>Your Activity Report</h3>
+    <div class="report-card">
+      <h4>{{ childReport.username }}'s Report</h4>
+      <div class="report-stats">
+        <p>Total Chores Completed: {{ childReport.totalChoresCompleted }}</p>
+        <p>Current Points: {{ childReport.currentPoints }}</p>
+        <p>Total Rewards Redeemed: {{ childReport.totalRewardsRedeemed }}</p>
+      </div>
+      
+      <div class="report-section">
+        <h5>Recent Completed Chores</h5>
+        <ul>
+          <li *ngFor="let chore of childReport.completedChores">
+            {{ chore.name }} - {{ chore.points }} points
+            ({{ chore.completedDate | date:'medium' }})
+          </li>
+        </ul>
+      </div>
+
+      <div class="report-section">
+        <h5>Recent Redeemed Rewards</h5>
+        <ul>
+          <li *ngFor="let reward of childReport.redeemedRewards">
+            {{ reward.name }} - {{ reward.pointsCost }} points
+            ({{ reward.redeemedAt | date:'medium' }})
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </div>

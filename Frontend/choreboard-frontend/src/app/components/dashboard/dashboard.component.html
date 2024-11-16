@@ -7,6 +7,7 @@
   <nav>
     <a routerLink="/chores">Chores</a>
     <a routerLink="/rewards">Rewards</a>
+    <a *ngIf="currentUser?.role === 'PARENT'" routerLink="/reports">Reports</a>
     <a *ngIf="currentUser?.role !== 'CHILD'" routerLink="/users">Users</a>
   </nav>
 
@@ -30,6 +31,27 @@
         <p>Status: {{ chore.status }}</p>
         <p *ngIf="chore.dueDate">Due Date: {{ chore.dueDate }}</p>
         <p *ngIf="chore.completedDate">Completed: {{ chore.completedDate }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="parent-report" *ngIf="currentUser?.role === 'PARENT' && parentReport">
+    <h2>Family Activity Report</h2>
+    <div class="report-card">
+      <h3>{{ parentReport.title }}</h3>
+      <div class="report-stats">
+        <div class="stat-card">
+          <h4>Total Chores</h4>
+          <p>{{ parentReport.totalChores }}</p>
+        </div>
+        <div class="stat-card">
+          <h4>Total Points</h4>
+          <p>{{ parentReport.totalPoints }}</p>
+        </div>
+        <div class="stat-card">
+          <h4>Total Rewards</h4>
+          <p>{{ parentReport.totalRewards }}</p>
+        </div>
       </div>
     </div>
   </section>

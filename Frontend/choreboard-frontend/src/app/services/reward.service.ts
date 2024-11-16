@@ -5,6 +5,7 @@ import { Reward } from '../models/reward.interface';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Redemption } from '../models/redemption.interface';
+import { ChildReport } from '../models/child-report.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,9 @@ export class RewardService {
     let params = new HttpParams();
     if (userId) params = params.set('userId', userId.toString());
     return this.http.get<Redemption[]>(`${this.apiUrl}/redemptions`, { params });
+  }
+
+  getChildReport(userId: number): Observable<ChildReport> {
+    return this.http.get<ChildReport>(`${this.apiUrl}/child-report/${userId}`);
   }
 }

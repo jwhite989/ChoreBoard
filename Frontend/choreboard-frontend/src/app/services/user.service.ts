@@ -62,4 +62,8 @@ export class UserService {
   completeChore(id: number): Observable<Chore> {
     return this.http.put<Chore>(`${this.apiUrl}/chores/${id}/complete`, {});
   }
+
+  getUserByUsername(username: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/username/${username}`);
+  }
 }

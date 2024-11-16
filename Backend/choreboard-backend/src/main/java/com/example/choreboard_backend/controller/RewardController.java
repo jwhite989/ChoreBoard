@@ -4,6 +4,7 @@ import com.example.choreboard_backend.model.Reward;
 import com.example.choreboard_backend.model.Redemption;
 import com.example.choreboard_backend.service.RewardService;
 import com.example.choreboard_backend.service.RewardReportService;
+import com.example.choreboard_backend.service.ChildReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,9 @@ public class RewardController {
 
     @Autowired
     private RewardReportService rewardReportService;
+
+    @Autowired
+    private ChildReportService childReportService;
 
     @GetMapping
     public List<Reward> getAllRewards() {
@@ -62,5 +66,10 @@ public class RewardController {
     @GetMapping("/redemptions")
     public List<Redemption> getRedemptions(@RequestParam(required = false) Long userId) {
         return rewardService.getRedemptions(userId);
+    }
+
+    @GetMapping("/child-report/{userId}")
+    public Map<String, Object> getChildReport(@PathVariable Long userId) {
+        return childReportService.generateChildReport(userId);
     }
 }

@@ -8,6 +8,7 @@ import { User } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Redemption } from '../../models/redemption.interface';
+import { ChildReport } from '../../models/child-report.interface';
 
 
 
@@ -30,6 +31,7 @@ export class RewardListComponent implements OnInit {
   };
   console = console;
   redemptions: Redemption[] = [];
+  childReport: ChildReport | null = null;
 
   constructor(
     private rewardService: RewardService,
@@ -41,6 +43,7 @@ export class RewardListComponent implements OnInit {
     this.loadRewards();
     this.loadCurrentUser();
     this.loadRedemptions();
+    this.loadChildReport();
   }
 
   loadRewards(): void {
@@ -64,6 +67,19 @@ export class RewardListComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error loading redemptions:', error);
+        }
+      });
+    }
+  }
+
+  loadChildReport(): void {
+    if (this.currentUser?.role === 'CHILD') {
+      this.rewardService.getChildReport(this.currentUser.id).subscribe({
+        next: (report: ChildReport) => {
+          this.childReport = report;
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error loading child report:', error);
         }
       });
     }

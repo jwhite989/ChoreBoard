@@ -7,6 +7,7 @@ import { ChoreListComponent } from './components/chore-list/chore-list.component
 import { RewardListComponent } from './components/reward-list/reward-list.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AdminGuard } from './guards/admin.guard';
+import { ReportsComponent } from './components/reports/reports.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   },
   { path: 'chores', component: ChoreListComponent, canActivate: [AuthGuard] },
   { path: 'rewards', component: RewardListComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] }
 ];
