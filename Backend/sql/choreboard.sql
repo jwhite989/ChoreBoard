@@ -29,11 +29,12 @@ CREATE TABLE IF NOT EXISTS Chores (
 
 -- Create the Rewards table
 CREATE TABLE IF NOT EXISTS Rewards (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
     description TEXT,
-    points_required INT NOT NULL,
-    points INT DEFAULT 0
+    points INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Create the Redemptions table
@@ -43,5 +44,5 @@ CREATE TABLE IF NOT EXISTS Redemptions (
     reward_id BIGINT,
     redeemed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (reward_id) REFERENCES Rewards(id)
+    FOREIGN KEY (reward_id) REFERENCES rewards(id)
 );

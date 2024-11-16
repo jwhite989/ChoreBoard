@@ -17,9 +17,9 @@
       <div class="form-group">
         <input
           type="text"
-          [(ngModel)]="newReward.title"
-          name="title"
-          placeholder="Title"
+          [(ngModel)]="newReward.name"
+          name="name"
+          placeholder="Name"
           required
         />
       </div>
@@ -34,9 +34,9 @@
       <div class="form-group">
         <input
           type="number"
-          [(ngModel)]="newReward.pointsCost"
-          name="pointsCost"
-          placeholder="Points Cost"
+          [(ngModel)]="newReward.pointsRequired"
+          name="pointsRequired"
+          placeholder="Points Required"
           required
         />
       </div>
@@ -47,9 +47,9 @@
   <div class="rewards-grid">
     <div *ngFor="let reward of rewards" class="reward-card">
       <div *ngIf="editingReward?.id !== reward.id; else editForm">
-        <h3>{{ reward.title }}</h3>
+        <h3>{{ reward.name }}</h3>
         <p>{{ reward.description }}</p>
-        <p>Cost: {{ reward.pointsCost }} points</p>
+        <p>Cost: {{ reward.pointsRequired }} points</p>
         <div class="button-group">
           <button
             *ngIf="selectedUser"
@@ -69,8 +69,8 @@
           <div class="form-group">
             <input
               type="text"
-              [(ngModel)]="editingReward.title"
-              name="title"
+              [(ngModel)]="editingReward.name"
+              name="name"
               required
             />
           </div>
@@ -84,8 +84,8 @@
           <div class="form-group">
             <input
               type="number"
-              [(ngModel)]="editingReward.pointsCost"
-              name="pointsCost"
+              [(ngModel)]="editingReward.pointsRequired"
+              name="pointsRequired"
               required
             />
           </div>

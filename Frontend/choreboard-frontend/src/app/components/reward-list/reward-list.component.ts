@@ -6,6 +6,8 @@ import { UserService } from '../../services/user.service';
 import { Reward } from '../../models/reward.interface';
 import { User } from '../../models/user.interface';
 
+
+
 @Component({
   selector: 'app-reward-list',
   standalone: true,
@@ -20,9 +22,9 @@ export class RewardListComponent implements OnInit {
   editingReward: Reward | null = null;
   newReward: Reward = {
     id: 0,
-    title: '',
+    name: '',
     description: '',
-    pointsCost: 0
+    pointsRequired: 0
   };
 
   constructor(
@@ -48,12 +50,12 @@ export class RewardListComponent implements OnInit {
   }
 
   canAffordReward(reward: Reward): boolean {
-    return this.selectedUser ? this.selectedUser.points >= reward.pointsCost : false;
+    return this.selectedUser ? this.selectedUser.points >= reward.pointsRequired : false;
   }
 
   redeemReward(reward: Reward): void {
     if (this.selectedUser && this.canAffordReward(reward)) {
-      this.selectedUser.points -= reward.pointsCost;
+      this.selectedUser.points -= reward.pointsRequired;
       this.userService.updateUser(this.selectedUser).subscribe(() => {
         this.loadUsers();
         // Reset selected user to refresh points
@@ -84,9 +86,9 @@ export class RewardListComponent implements OnInit {
       this.loadRewards();
       this.newReward = {
         id: 0,
-        title: '',
+        name: '',
         description: '',
-        pointsCost: 0
+        pointsRequired: 0
       };
     });
   }
