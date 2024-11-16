@@ -13,8 +13,8 @@ public class Chore extends BaseEntity {
     private String title;
 
     @NotBlank
-    @Column(name = "status", columnDefinition = "ENUM('pending', 'completed')")
-    private String status;
+    @Column(name = "status")
+    private String status = "PENDING";
 
     @Column(name = "due_date")
     private String dueDate;
@@ -23,6 +23,7 @@ public class Chore extends BaseEntity {
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
 
+    @Column(name = "completed_date")
     private LocalDate completedDate;
 
     // Getters and setters
