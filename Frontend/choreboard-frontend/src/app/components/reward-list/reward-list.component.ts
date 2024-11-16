@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.service';
 import { Reward } from '../../models/reward.interface';
 import { User } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -26,6 +27,7 @@ export class RewardListComponent implements OnInit {
     description: '',
     pointsRequired: 0
   };
+  console = console;
 
   constructor(
     private rewardService: RewardService,
@@ -51,11 +53,31 @@ export class RewardListComponent implements OnInit {
   }
 
   redeemReward(reward: Reward): void {
-    if (this.currentUser && this.currentUser.points >= reward.pointsRequired) {
-      this.rewardService.redeemReward(reward.id, this.currentUser.id).subscribe(() => {
-        this.loadCurrentUser();
-      });
+    console.log('Redeem button clicked');
+    console.log('Current user:', this.currentUser);
+    console.log('Reward:', reward);
+
+    if (!this.currentUser) {
+      alert('Please log in to redeem rewards');
+      return;
     }
+
+    if (this.currentUser.points < reward.pointsRequired) {
+      alert(`You need ${reward.pointsRequired} points to redeem this reward. You currently have ${this.currentUser.points} points.`);
+      return;
+    }
+
+    this.rewardService.redeemReward(reward.id, this.currentUser.id).subscribe({
+      next: () => {
+        console.log('Reward redeemed successfully');
+        this.loadCurrentUser();
+        alert('Reward redeemed successfully!');
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error redeeming reward:', error);
+        alert('Failed to redeem reward: ' + error.message);
+      }
+    });
   }
 
   startEditing(reward: Reward): void {

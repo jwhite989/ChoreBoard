@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reward } from '../models/reward.interface';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +37,15 @@ export class RewardService {
   }
 
   redeemReward(rewardId: number, userId: number): Observable<void> {
+    console.log(`Attempting to redeem reward ${rewardId} for user ${userId}`);
     return this.http.post<void>(`${this.apiUrl}/${rewardId}/redeem`, null, {
       params: { userId: userId.toString() }
-    });
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error in reward service:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   updateReward(reward: Reward): Observable<Reward> {

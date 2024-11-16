@@ -42,7 +42,7 @@
         <p>Cost: {{ reward.pointsRequired }} points</p>
         <div class="button-group">
           <button
-            (click)="redeemReward(reward)"
+            (click)="console.log('Button clicked'); redeemReward(reward)"
             [disabled]="!currentUser || currentUser.points < reward.pointsRequired"
           >
             Redeem
