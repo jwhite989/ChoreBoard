@@ -53,7 +53,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(System.getenv().getOrDefault("FRONTEND_URL", "http://localhost:4200")));
+        configuration.setAllowedOrigins(Arrays.asList(System.getenv().getOrDefault("FRONTEND_URL", "https://thankful-bay-05e2eb910.5.azurestaticapps.net")));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(System.getenv().getOrDefault("FRONTEND_URL", "http://localhost:4200"))
+                .allowedOrigins(System.getenv().getOrDefault("FRONTEND_URL", "https://thankful-bay-05e2eb910.5.azurestaticapps.net"))
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization")
