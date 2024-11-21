@@ -11,7 +11,7 @@ import { Chore } from '../models/chore.interface';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = 'https://choreboard-api-bkdwhadhf8b8fafa.eastus-01.azurewebsites.net/api/users';
 
   constructor(private http: HttpClient) {}
 

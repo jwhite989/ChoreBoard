@@ -15,7 +15,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = 'https://choreboard-api-bkdwhadhf8b8fafa.eastus-01.azurewebsites.net/api/users';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 

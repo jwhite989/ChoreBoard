@@ -11,7 +11,7 @@ import { ChildReport } from '../models/child-report.interface';
   providedIn: 'root'
 })
 export class RewardService {
-  private apiUrl = 'http://localhost:8080/api/rewards';
+  private apiUrl = 'https://choreboard-api-bkdwhadhf8b8fafa.eastus-01.azurewebsites.net/api/rewards';
 
   constructor(private http: HttpClient) {}
 
