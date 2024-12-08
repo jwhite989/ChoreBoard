@@ -1,29 +1,74 @@
-<strong>**DO NOT DISTRIBUTE OR PUBLICLY POST SOLUTIONS TO THESE LABS. MAKE ALL FORKS OF THIS REPOSITORY WITH SOLUTION CODE PRIVATE. PLEASE REFER TO THE STUDENT CODE OF CONDUCT AND ETHICAL EXPECTATIONS FOR COLLEGE OF INFORMATION TECHNOLOGY STUDENTS FOR SPECIFICS. **</strong>
+# ChoreBoard
 
-# WESTERN GOVERNORS UNIVERSITY 
-## D424 – SOFTWARE ENGINEERING CAPSTONE
-Welcome to Software Engineering Capstone! This is an opportunity for students to develop full stack software engineering documentation and applications. They will execute documentation, unit testing, revision of software applications, and deploy software applications with scripts and containers on a cloud platform.
+ChoreBoard is a task management application designed to help households organize and manage their chores efficiently. With features like user authentication, chore assignment, and progress tracking, ChoreBoard aims to simplify the process of distributing and completing tasks within a group.
 
-FOR SPECIFIC TASK INSTRUCTIONS AND REQUIREMENTS FOR THIS ASSESSMENT, PLEASE REFER TO THE COURSE PAGE.
-BASIC INSTRUCTIONS
-For this assessment, you will deploy your developed full stack software product to a web service of your choice.
+## Features
+- **User Authentication**: Secure user registration and login.
+- **Chore Assignment**: Assign tasks to specific users.
+- **Progress Tracking**: Mark chores as completed and view progress.
+- **Responsive Design**: Accessible on both desktop and mobile devices.
 
+## Tech Stack
 
-## SUPPLEMENTAL RESOURCES  
-1.	How to clone a project to IntelliJ using Git?
+### Frontend
+- [Angular](https://angular.io/): A powerful framework for building user interfaces.
 
-> Ensure that you have Git installed on your system and that IntelliJ is installed using [Toolbox](https://www.jetbrains.com/toolbox-app/). Make sure that you are using version 2022.3.2. Once this has been confirmed, click the clone button and use the 'IntelliJ IDEA (HTTPS)' button. This will open IntelliJ with a prompt to clone the proejct. Save it in a safe location for the directory and press clone. IntelliJ will prompt you for your credentials. Enter in your WGU Credentials and the project will be cloned onto your local machine.  
+### Backend
+- [Spring Boot](https://spring.io/projects/spring-boot): A Java-based framework for building robust APIs.
 
-2. How to create a branch and start Development?
+### Database
+- [MySQL](https://www.mysql.com/): A reliable relational database for storing application data.
 
-- GitLab method
-> Press the '+' button located near your branch name. In the dropdown list, press the 'New branch' button. This will allow you to create a name for your branch. Once the branch has been named, you can select 'Create Branch' to push the branch to your repository.
+### Deployment
+- Hosted on [Microsoft Azure](https://azure.microsoft.com/) using the free Azure student account.
 
-- IntelliJ method
-> In IntelliJ, Go to the 'Git' button on the top toolbar. Select the new branch option and create a name for the branch. Make sure checkout branch is selected and press create. You can now add a commit message and push the new branch to the local repo.
+## Prerequisites
+- Node.js and npm installed
+- Java Development Kit (JDK) 11 or higher
+- MySQL Server
+- Angular CLI
+- Maven
 
-## SUPPORT
-If you need additional support, please navigate to the course page and reach out to your course instructor.
+## Setup Instructions
 
-## FUTURE USE
-Take this opportunity to create or add to a simple resume portfolio to highlight and showcase your work for future use in career search, experience, and education!
+### Backend Setup
+1. Clone the repository:
+2. Configure the database:
+    - Create a MySQL database named `choreboard`.
+    - Update `application.properties` with your database credentials.
+3. Build and run the application:
+   ```bash
+   mvn spring-boot:run
+   ```
+
+### Frontend Setup
+1. Navigate to the frontend directory:
+   ```bash
+   cd choreboard/frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the Angular application:
+   ```bash
+   ng serve
+   ```
+4. Access the application at `http://localhost:4200`.
+
+## Deployment
+ChoreBoard is deployed using Azure. Follow these steps to deploy:
+
+1. **Backend Deployment**:
+    - Package the Spring Boot application as a JAR file:
+      ```bash
+      mvn clean package
+      ```
+    - Deploy the JAR file to an Azure App Service instance.
+
+2. **Frontend Deployment**:
+    - Build the Angular project:
+      ```bash
+      ng build --prod
+      ```
+    - Deploy the `dist/` directory to Azure Static Web Apps or any suitable hosting service.
